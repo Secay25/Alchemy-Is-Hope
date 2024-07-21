@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://nri2vnm2ctxj"]
+[gd_scene load_steps=6 format=3 uid="uid://nri2vnm2ctxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_60t53"]
 [ext_resource type="Script" path="res://Scripts/Player/States/StateMachinePlayer.gd" id="2_ttknp"]
 [ext_resource type="Script" path="res://Scripts/Player/States/Crouch.gd" id="3_bfqn2"]
+[ext_resource type="Script" path="res://Scripts/Player/States/Run.gd" id="4_ip02i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jknip"]
 radius = 32.0
@@ -26,6 +27,9 @@ initialState = NodePath("Crouch")
 [node name="Crouch" type="Node" parent="StateMachine"]
 unique_name_in_owner = true
 script = ExtResource("3_bfqn2")
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("4_ip02i")
 
 [node name="Hands" type="Node2D" parent="."]
 

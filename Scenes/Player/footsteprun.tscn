@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bujlet5plhef7"]
+
+[ext_resource type="Texture2D" uid="uid://dmtmabj4tj6hx" path="res://Assets/Player/FootPrint.png" id="1_hy6d4"]
+[ext_resource type="Script" path="res://Scripts/Player/footsteprun.gd" id="2_ofdq5"]
+
+[node name="Node2D" type="Node2D"]
+top_level = true
+z_index = -100
+
+[node name="FootStepRun" type="Sprite2D" parent="."]
+position = Vector2(18, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("1_hy6d4")
+script = ExtResource("2_ofdq5")
+
+[node name="Timer" type="Timer" parent="FootStepRun"]
+wait_time = 1.5
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="FootStepRun/Timer" to="FootStepRun" method="_onTimerTimeout"]

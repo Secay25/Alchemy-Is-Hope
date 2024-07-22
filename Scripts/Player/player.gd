@@ -1,6 +1,7 @@
 class_name Player extends CharacterBody2D
 
 var stamina: float = 100.0
+var leftPrint: bool = false
 
 func MovePlayer(speed: float) -> void:
 	var direction: Vector2 = Input.get_vector("MoveLeft","MoveRight","MoveUp","MoveDown")

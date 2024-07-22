@@ -1,24 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://nri2vnm2ctxj"]
+[gd_scene load_steps=8 format=3 uid="uid://nri2vnm2ctxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_60t53"]
+[ext_resource type="Texture2D" uid="uid://cjret3r6eu0y5" path="res://Assets/Player/Player.png" id="2_hnh38"]
 [ext_resource type="Script" path="res://Scripts/Player/States/StateMachinePlayer.gd" id="2_ttknp"]
 [ext_resource type="Script" path="res://Scripts/Player/States/Crouch.gd" id="3_bfqn2"]
 [ext_resource type="Script" path="res://Scripts/Player/States/Run.gd" id="4_ip02i"]
+[ext_resource type="Texture2D" uid="uid://dt624cxk3s87f" path="res://Assets/Player/Hand.png" id="6_xyu0d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jknip"]
-radius = 32.0
+radius = 25.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 30
 motion_mode = 1
 script = ExtResource("1_60t53")
 
+[node name="Head" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("2_hnh38")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_jknip")
-
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.914063, 0, 0, 1)
-polygon = PackedVector2Array(-17, -28, -8, -31, 0, -32, 9, -31, 16, -28, 23, -23, 28, -16, 31, -8, 32, 0, 31, 8, 28, 15, 23, 24, 16, 28, 8, 31, 0, 32, -9, 31, -16, 28, -22, 23, -27, 17, -31, 9, -32, -1, -31, -9, -27, -17, -23, -23)
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 script = ExtResource("2_ttknp")
@@ -28,13 +30,24 @@ initialState = NodePath("Crouch")
 unique_name_in_owner = true
 script = ExtResource("3_bfqn2")
 
+[node name="Timer" type="Timer" parent="StateMachine/Crouch"]
+wait_time = 0.35
+
 [node name="Run" type="Node" parent="StateMachine"]
 script = ExtResource("4_ip02i")
 
+[node name="Timer" type="Timer" parent="StateMachine/Run"]
+wait_time = 0.2
+
 [node name="Hands" type="Node2D" parent="."]
 
-[node name="Polygon2D" type="Polygon2D" parent="Hands"]
-polygon = PackedVector2Array(-29, -50, -30, -40, -21, -40, -21, -50)
+[node name="LeftHand" type="Sprite2D" parent="Hands"]
+position = Vector2(-27, -39)
+texture = ExtResource("6_xyu0d")
 
-[node name="Polygon2D2" type="Polygon2D" parent="Hands"]
-polygon = PackedVector2Array(15, -49, 15, -40, 25, -40, 25, -49)
+[node name="RightHand" type="Sprite2D" parent="Hands"]
+position = Vector2(27, -39)
+texture = ExtResource("6_xyu0d")
+
+[connection signal="timeout" from="StateMachine/Crouch/Timer" to="StateMachine/Crouch" method="_onTimerTimeout"]
+[connection signal="timeout" from="StateMachine/Run/Timer" to="StateMachine/Run" method="_onTimerTimeout"]

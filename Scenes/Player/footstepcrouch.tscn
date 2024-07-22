@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgt8wl6k4uuh3"]
+
+[ext_resource type="Texture2D" uid="uid://dmtmabj4tj6hx" path="res://Assets/Player/FootPrint.png" id="1_1l84s"]
+[ext_resource type="Script" path="res://Scripts/Player/footstepcrouch.gd" id="2_uay6x"]
+
+[node name="Node2D" type="Node2D"]
+top_level = true
+z_index = -100
+
+[node name="FootStepCrouch" type="Sprite2D" parent="."]
+self_modulate = Color(0.74, 0.74, 0.74, 1)
+position = Vector2(18, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("1_1l84s")
+script = ExtResource("2_uay6x")
+
+[node name="Timer" type="Timer" parent="FootStepCrouch"]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="FootStepCrouch/Timer" to="FootStepCrouch" method="_onTimerTimeout"]

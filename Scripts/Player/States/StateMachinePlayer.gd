@@ -9,12 +9,12 @@ func _ready() -> void:
 		if child is State:
 			states[child.name.to_lower()] = child
 			child.Transitioned.connect(_onStateTransition)
+			child.player = get_parent()
 
 	if !initialState:
 		initialState = %Crouch
 
 	initialState.Enter()
-	initialState.player = get_parent()
 	currentState = initialState
 
 func _process(delta: float) -> void:
@@ -38,5 +38,4 @@ func _onStateTransition(state: PlayerStates,newStateName: String) -> void:
 		currentState.Exit()
 
 	newState.Enter()
-	newState.player = get_parent()
 	currentState = newState

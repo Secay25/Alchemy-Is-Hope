@@ -1,6 +1,5 @@
-class_name Run extends PlayerStates
+class_name PlayerRun extends PlayerStates
 
-var leftPrint: bool = false
 const SPEED: float = 250.0
 const STAMINADECREASE: float = 15
 const RUNFOOTPRINT: PackedScene = preload("res://Scenes/Player/footsteprun.tscn")

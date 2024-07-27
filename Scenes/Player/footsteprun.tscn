@@ -1,7 +1,61 @@
-[gd_scene load_steps=3 format=3 uid="uid://bujlet5plhef7"]
+[gd_scene load_steps=12 format=3 uid="uid://bujlet5plhef7"]
 
 [ext_resource type="Texture2D" uid="uid://dmtmabj4tj6hx" path="res://Assets/Player/FootPrint.png" id="1_hy6d4"]
 [ext_resource type="Script" path="res://Scripts/Player/footsteprun.gd" id="2_ofdq5"]
+[ext_resource type="Texture2D" uid="uid://dtg8ne8pkkkg0" path="res://Assets/Player/FootPrintRunEffect.png" id="3_v3sa3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ths3e"]
+atlas = ExtResource("3_v3sa3")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j3ebr"]
+atlas = ExtResource("3_v3sa3")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qeq0t"]
+atlas = ExtResource("3_v3sa3")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y136s"]
+atlas = ExtResource("3_v3sa3")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ins6m"]
+atlas = ExtResource("3_v3sa3")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wck3i"]
+atlas = ExtResource("3_v3sa3")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_of7pj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ths3e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j3ebr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qeq0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y136s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ins6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wck3i")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ny0oa"]
+radius = 53.5093
 
 [node name="Node2D" type="Node2D"]
 top_level = true
@@ -18,4 +72,24 @@ wait_time = 1.5
 one_shot = true
 autostart = true
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="FootStepRun"]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_of7pj")
+autoplay = "default"
+
+[node name="Area2D" type="Area2D" parent="FootStepRun"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FootStepRun/Area2D"]
+shape = SubResource("CircleShape2D_ny0oa")
+
+[node name="Timer" type="Timer" parent="FootStepRun/Area2D"]
+wait_time = 0.5
+autostart = true
+
 [connection signal="timeout" from="FootStepRun/Timer" to="FootStepRun" method="_onTimerTimeout"]
+[connection signal="animation_finished" from="FootStepRun/AnimatedSprite2D" to="FootStepRun" method="_onAnimatedSprite2dAnimationFinished"]
+[connection signal="body_entered" from="FootStepRun/Area2D" to="FootStepRun" method="_onArea2dBodyEntered"]
+[connection signal="timeout" from="FootStepRun/Area2D/Timer" to="FootStepRun" method="_onAreaTimerTimeout"]

@@ -1,7 +1,47 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgt8wl6k4uuh3"]
+[gd_scene load_steps=10 format=3 uid="uid://bgt8wl6k4uuh3"]
 
 [ext_resource type="Texture2D" uid="uid://dmtmabj4tj6hx" path="res://Assets/Player/FootPrint.png" id="1_1l84s"]
 [ext_resource type="Script" path="res://Scripts/Player/footstepcrouch.gd" id="2_uay6x"]
+[ext_resource type="Texture2D" uid="uid://exvrrxo0ml25" path="res://Assets/Player/FootPrintCrouchEffect.png" id="3_sdigb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xnwo"]
+atlas = ExtResource("3_sdigb")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t2m62"]
+atlas = ExtResource("3_sdigb")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iw86s"]
+atlas = ExtResource("3_sdigb")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q81yj"]
+atlas = ExtResource("3_sdigb")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rlgh6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xnwo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t2m62")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iw86s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q81yj")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ri4oy"]
+height = 31.0
 
 [node name="Node2D" type="Node2D"]
 top_level = true
@@ -19,4 +59,25 @@ wait_time = 0.5
 one_shot = true
 autostart = true
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="FootStepCrouch"]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_rlgh6")
+autoplay = "default"
+
+[node name="Area2D" type="Area2D" parent="FootStepCrouch"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FootStepCrouch/Area2D"]
+position = Vector2(0.5, 0)
+shape = SubResource("CapsuleShape2D_ri4oy")
+
+[node name="Timer" type="Timer" parent="FootStepCrouch/Area2D"]
+wait_time = 0.5
+autostart = true
+
 [connection signal="timeout" from="FootStepCrouch/Timer" to="FootStepCrouch" method="_onTimerTimeout"]
+[connection signal="animation_finished" from="FootStepCrouch/AnimatedSprite2D" to="FootStepCrouch" method="_onAnimatedSprite2dAnimationFinished"]
+[connection signal="body_entered" from="FootStepCrouch/Area2D" to="FootStepCrouch" method="_onArea2dBodyEntered"]
+[connection signal="timeout" from="FootStepCrouch/Area2D/Timer" to="FootStepCrouch" method="_onAreaTimerTimeout"]

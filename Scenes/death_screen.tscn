@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0iv6un6kq20w"]
+
+[ext_resource type="Script" path="res://Scripts/death_screen.gd" id="1_hmrju"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i8a2i"]
+font_size = 120
+
+[sub_resource type="LabelSettings" id="LabelSettings_wdagp"]
+font_size = 50
+
+[node name="DeathScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hmrju")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -121.5
+offset_top = -121.5
+offset_right = 121.5
+offset_bottom = 121.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+pivot_offset = Vector2(121, 121)
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "DED"
+label_settings = SubResource("LabelSettings_i8a2i")
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Restart"
+label_settings = SubResource("LabelSettings_wdagp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_onButtonPressed"]

@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://cmnmsfoy28ra4"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy/enemy.gd" id="1_d3l3v"]
+[ext_resource type="Texture2D" uid="uid://be7py810mac74" path="res://Assets/Enemies/Enemy.png" id="1_tjx35"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/StatemachineEnemy.gd" id="3_hwn40"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/Spawning.gd" id="4_kia10"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/Idle.gd" id="4_xekuo"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/Chase.gd" id="6_ppawl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gad3i"]
+radius = 26.0192
+
+[node name="Enemy" type="CharacterBody2D"]
+modulate = Color(1, 1, 1, 0)
+collision_layer = 2
+collision_mask = 4
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_d3l3v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_tjx35")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gad3i")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Statemachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("3_hwn40")
+initialState = NodePath("Spawning")
+
+[node name="Spawning" type="Node" parent="Statemachine"]
+script = ExtResource("4_kia10")
+
+[node name="Idle" type="Node" parent="Statemachine"]
+script = ExtResource("4_xekuo")
+
+[node name="Timer" type="Timer" parent="Statemachine/Idle"]
+one_shot = true
+
+[node name="EnemyChase" type="Node" parent="Statemachine"]
+script = ExtResource("6_ppawl")
+
+[node name="Timer" type="Timer" parent="Statemachine/EnemyChase"]
+wait_time = 0.1
+
+[connection signal="timeout" from="Statemachine/Idle/Timer" to="Statemachine/Idle" method="_onTimerTimeout"]
+[connection signal="timeout" from="Statemachine/EnemyChase/Timer" to="Statemachine/EnemyChase" method="_onTimerTimeout"]

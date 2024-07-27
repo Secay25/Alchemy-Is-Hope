@@ -5,7 +5,7 @@ var leftPrint: bool = false
 
 func MovePlayer(speed: float) -> void:
 	var direction: Vector2 = Input.get_vector("MoveLeft","MoveRight","MoveUp","MoveDown")
-	velocity = direction * speed
+	velocity = direction.normalized() * speed
 	move_and_slide()
 
 func LookAtMouse() -> void:
@@ -13,5 +13,9 @@ func LookAtMouse() -> void:
 	var angle: float = direction.angle_to(Vector2.UP)
 	rotation = -angle
 
-func lookAtDirection(_direction: Vector2) -> void:
+func LookAtDirection(_direction: Vector2) -> void:
 	pass
+
+func _onArea2dBodyEntered(body: Node2D) -> void:
+	if body is Enemy:
+		GLOBAL.SwitchScenes(get_parent(),load("res://Scenes/death_screen.tscn") as PackedScene)

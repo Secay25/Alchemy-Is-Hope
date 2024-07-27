@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://nri2vnm2ctxj"]
+[gd_scene load_steps=9 format=3 uid="uid://nri2vnm2ctxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_60t53"]
 [ext_resource type="Texture2D" uid="uid://cjret3r6eu0y5" path="res://Assets/Player/Player.png" id="2_hnh38"]
@@ -10,8 +10,11 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_jknip"]
 radius = 25.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_wuo73"]
+radius = 25.02
+
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 30
+collision_mask = 4
 motion_mode = 1
 script = ExtResource("1_60t53")
 
@@ -49,5 +52,14 @@ texture = ExtResource("6_xyu0d")
 position = Vector2(27, -39)
 texture = ExtResource("6_xyu0d")
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_wuo73")
+
 [connection signal="timeout" from="StateMachine/Crouch/Timer" to="StateMachine/Crouch" method="_onTimerTimeout"]
 [connection signal="timeout" from="StateMachine/Run/Timer" to="StateMachine/Run" method="_onTimerTimeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_onArea2dBodyEntered"]

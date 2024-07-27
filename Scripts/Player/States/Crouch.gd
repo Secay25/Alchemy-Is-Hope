@@ -1,4 +1,4 @@
-class_name Crouch extends PlayerStates
+class_name PlayerCrouch extends PlayerStates
 
 const SPEED: float = 125.0
 const MAXSTAMINA: float = 100.0
@@ -23,7 +23,6 @@ func PhysicsUpdate(delta: float) -> void:
 	
 	if Input.is_action_pressed("Run") and player.stamina >= STAMINATHRESHOLD:
 		Transitioned.emit(self,"Run")
-
 
 func _onTimerTimeout() -> void:
 	if player.velocity != Vector2.ZERO:
